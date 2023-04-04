@@ -1,0 +1,3 @@
+gradio
+pandas
+scikit-learn==1.2.1
