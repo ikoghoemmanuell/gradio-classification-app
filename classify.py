@@ -11,62 +11,52 @@ scaler = pickle.load(open("scaler.pkl", "rb"))
 # Load the data
 data = pd.read_csv('data.csv')
 
+
+# separate categorical and numeric columns
+categoric_columns = data.select_dtypes(include=['object']).columns.tolist()
+numeric_columns = data.select_dtypes(include=['int', 'float']).columns.tolist()
+
 # Define the input and output interfaces for the Gradio app
-input_components = [
-    gr.inputs.Dropdown(choices=["Male", "Female"], label="Gender"),
-    gr.inputs.Checkbox(label="Senior Citizen"),
-    gr.inputs.Checkbox(label="Partner"),
-    gr.inputs.Checkbox(label="Dependents"),
-    gr.inputs.Number(label="Tenure (months)"),
-    gr.inputs.Radio(choices=["Yes", "No"], label="Phone Service"),
-    gr.inputs.Radio(choices=["DSL", "Fiber optic", "No"], label="Internet Service"),
-    gr.inputs.Radio(choices=["Yes", "No", "No internet service"], label="Online Backup"),
-    gr.inputs.Radio(choices=["Yes", "No", "No internet service"], label="Tech Support"),
-    gr.inputs.Dropdown(choices=["Month-to-month", "One year", "Two year"], label="Contract"),
-    gr.inputs.Radio(choices=["Yes", "No"], label="Paperless Billing"),
-    gr.inputs.Dropdown(choices=["Electronic check", "Mailed check", "Bank transfer (automatic)", "Credit card (automatic)"], label="Payment Method"),
-    gr.inputs.Number(label="Monthly Charges"),
-    gr.inputs.Number(label="Total Charges"),
-    gr.inputs.Radio(choices=["Yes", "No", "No internet service"], label="Streaming Service"),
-    gr.inputs.Radio(choices=["Yes", "No", "No internet service"], label="Security Service"),
-]
+input_components = []
+
+# Create Gradio inputs for each column
+for col in data.columns:
+    if col in categoric_columns:
+        categories = data[col].unique()
+        if len(categories) < 4:
+            input = gr.CheckboxGroup(choices=list(categories), label=col)
+        else:
+            input = gr.Dropdown(choices=list(categories), label=col)
+    elif col in numeric_columns:
+        min_val = data[col].min()
+        max_val = data[col].max()
+        if min_val-max_val < 30:
+            input = gr.Slider(minimum=min_val, maximum=max_val, label=col)
+        else:
+            input = gr.Number(label=col)
+    input_components.append(input)
 
 output_components = [
-    gr.outputs.Label(label="Churn Prediction"),
+    gr.Label(label="Churn Prediction"),
 ]
 
 # Convert the input values to a pandas DataFrame with the appropriate column names
-def input_df_creator(gender, senior_citizen, partner, dependents, tenure, phone_service, internet_service, online_backup, tech_support, contract, paperless_billing, payment_method, monthly_charges, total_charges, streaming_service, security_service):
-    input_data = pd.DataFrame({
-        "gender": [gender],
-        "SeniorCitizen": [int(senior_citizen)],
-        "Partner": [int(partner)],
-        "Dependents": [int(dependents)],
-        "tenure": [int(tenure)],
-        "PhoneService": [phone_service],
-        "InternetService": [internet_service],
-        "OnlineBackup": [online_backup],
-        "TechSupport": [tech_support],
-        "Contract": [contract],
-        "PaperlessBilling": [paperless_billing],
-        "PaymentMethod": [payment_method],
-        "MonthlyCharges": [float(monthly_charges)],
-        "TotalCharges": [float(total_charges)],
-        "StreamingService": [streaming_service],
-        "SecurityService": [security_service],
-    })
+def input_df_creator():
+    input_labels = [input.label for input in input_components]
+    input_values = [input.value for input in input_components]
+    input_data = pd.DataFrame([input_values], columns=input_labels)
     return input_data
 
 # Define the function to be called when the Gradio app is run
-def predict_churn(gender, senior_citizen, partner, dependents, tenure, phone_service, internet_service, online_backup, tech_support, contract, paperless_billing, payment_method, monthly_charges, total_charges, streaming_service, security_service):
-    input_df = input_df_creator(gender, senior_citizen, partner, dependents, tenure, phone_service, internet_service, online_backup, tech_support, contract, paperless_billing, payment_method, monthly_charges, total_charges, streaming_service, security_service)
-# defining categories and numeric columns
-    categoric_columns = ['gender', 'SeniorCitizen', 'Partner', 'Dependents', 'PhoneService', 'InternetService', 'OnlineBackup', 'TechSupport', 'Contract', 'PaperlessBilling', 'PaymentMethod', 'StreamingService', 'SecurityService']
-    columns = list(input_df.columns) 
-    numeric_columns = [i for i in columns if i not in categoric_columns]
+def predict_churn():
+    input_df = input_df_creator()
+    
+    # Cast any int64 values to int32
+    input_df = input_df.astype({'column_name': 'int32'})
+    
+    # Scale numeric columns and encode categorical columns
     scaled_num = scaler.fit_transform(input_df[numeric_columns])
     encoded_cat = encoder.transform(input_df[categoric_columns])
-    print(encoded_cat)
     input_data = pd.concat([scaled_num, encoded_cat], axis=1)
     
     # Use the pre-trained model to make a prediction
