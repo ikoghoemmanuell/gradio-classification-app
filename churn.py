@@ -33,27 +33,50 @@ output_components = [
 ]
 
 # Convert the input values to a pandas DataFrame with the appropriate column names
-def input_df_creator():
-    input_labels = [input.label for input in input_components]
-    input_values = [input.value for input in input_components]
-    input_data = pd.DataFrame([input_values], columns=input_labels)
+def input_df_creator(gender, SeniorCitizen, Partner, Dependents, tenure,
+       PhoneService, InternetService, OnlineBackup, TechSupport,
+       Contract, PaperlessBilling, PaymentMethod, MonthlyCharges,
+       TotalCharges, StreamingService, SecurityService):
+    input_data = pd.DataFrame({
+        "gender": [gender],
+        "SeniorCitizen": [SeniorCitizen],
+        "Partner": [Partner],
+        "Dependents": [Dependents],
+        "tenure": [int(tenure)],
+        "PhoneService": [PhoneService],
+        "InternetService": [InternetService],
+        "OnlineBackup": [OnlineBackup],
+        "TechSupport": [TechSupport],
+        "Contract": [Contract],
+        "PaperlessBilling": [PaperlessBilling],
+        "PaymentMethod": [PaymentMethod],
+        "StreamingService": [StreamingService],
+        "SecurityService": [SecurityService],
+        "MonthlyCharges": [float(MonthlyCharges)],
+        "TotalCharges": [float(TotalCharges)],
+    }) 
     return input_data
 
 # Define the function to be called when the Gradio app is run
-def predict_churn(*inputs):
-    input_df = input_df_creator()
+def predict_churn(gender, SeniorCitizen, Partner, Dependents, tenure,
+       PhoneService, InternetService, OnlineBackup, TechSupport,
+       Contract, PaperlessBilling, PaymentMethod, MonthlyCharges,
+       TotalCharges, StreamingService, SecurityService):
+    input_df = input_df_creator(gender, SeniorCitizen, Partner, Dependents, tenure,
+       PhoneService, InternetService, OnlineBackup, TechSupport,
+       Contract, PaperlessBilling, PaymentMethod, MonthlyCharges,
+       TotalCharges, StreamingService, SecurityService)
+    
     # Encode categorical variables
-    cat_cols = input_df.select_dtypes(include=['object']).columns
-    cats = encoder.fit_transform(input_df[cat_cols].fillna('NaN'))
+    cat_cols = data.select_dtypes(include=['object']).columns
+    cat_encoded = encoder.transform(input_df[cat_cols])
 
     # Scale numerical variables
-    num_cols = input_df.select_dtypes(include=['int64', 'float64']).columns
-    nums = scaler.transform(input_df[num_cols])
+    num_cols = data.select_dtypes(include=['int64', 'float64']).columns
+    num_scaled = scaler.transform(input_df[num_cols])
 
     # joining encoded and scaled columns back together
-    processed_df = pd.concat([cats, nums], axis=1)
-    print(input_df[cat_cols])
-    print(processed_df.columns)
+    processed_df = pd.concat([num_scaled, cat_encoded], axis=1)
 
     # Make prediction
     prediction = model.predict(processed_df)
