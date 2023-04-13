@@ -7,7 +7,7 @@
 
 ## Introduction
 
-<img src="https://i.ytimg.com/vi/Klqn--Mu2pE/maxresdefault.jpg" width="150">
+<img src="https://i.ytimg.com/vi/RiCQzBluTxU/maxresdefault.jpg" width="150">
 
 In this article, we will go through the process of building and deploying a machine learning model using Gradio. Gradio is an open-source Python library that enables you to quickly create custom interfaces for your machine learning models, allowing you to deploy them without needing to build a complete web application.
 
