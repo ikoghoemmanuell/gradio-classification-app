@@ -54,6 +54,10 @@ We will use the Gradio library to create the app. The app will have input compon
 
 To deploy the app, we will use the Gradio deploy method. We will define the app object and then use the deploy method to launch the app. The deploy method takes in several parameters, such as the app object, the app name, and the app description.
 
+## Screenshots
+![Screenshot (95)](https://user-images.githubusercontent.com/102419217/232255094-3e3aea3c-d436-430a-81aa-68c025bd5020.png)
+![Screenshot (96)](https://user-images.githubusercontent.com/102419217/232255106-ed5cb2bd-1954-40f8-a10e-a1d68941761a.png)
+
 ## ✨ Conclusion
 
 We have now built a Gradio app that predicts customer churn using machine learning. The app is simple to use and can be easily deployed to the cloud or integrated into a web application.
