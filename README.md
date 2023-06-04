@@ -1,6 +1,7 @@
 [![View My Profile](https://img.shields.io/badge/View-My_Profile-green?logo=GitHub)](https://github.com/ikoghoemmanuell)
 [![View Repositories](https://img.shields.io/badge/View-My_Repositories-blue?logo=GitHub)](https://github.com/ikoghoemmanuell?tab=repositories)
 [![View My Profile](https://img.shields.io/badge/MEDIUM-Article-purple?logo=Medium)](https://medium.com/@emmanuel.ikogho/deploying-a-machine-learning-model-with-gradio-97d4f8c5e795)
+[![Docker App](https://img.shields.io/badge/Gradio-App-yellow)](https://huggingface.co/spaces/ikoghoemmanuell/Churn-Classification-App-Gradio)
 
 # Building and Deploying a Machine Learning Model with Gradio
 
@@ -60,9 +61,7 @@ iface.launch(inbrowser= True, show_error= True)
 This will launch a local web server and open a browser window with the Gradio interface. Then you just click on run and you're good to go.
 
 # Screenshots
-
-![Screenshot (95)](https://user-images.githubusercontent.com/102419217/232255094-3e3aea3c-d436-430a-81aa-68c025bd5020.png)
-![Screenshot (96)](https://user-images.githubusercontent.com/102419217/232255106-ed5cb2bd-1954-40f8-a10e-a1d68941761a.png)
+![ezgif com-crop (2)](https://github.com/ikoghoemmanuell/gradio-classification-app/assets/102419217/d38037f5-9454-4c77-b5cc-e3a8197fd043)
 
 # ✨ Conclusion
 
