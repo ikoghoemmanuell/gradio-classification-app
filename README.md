@@ -1,12 +1,10 @@
 [![View My Profile](https://img.shields.io/badge/View-My_Profile-green?logo=GitHub)](https://github.com/ikoghoemmanuell)
-
 [![View Repositories](https://img.shields.io/badge/View-My_Repositories-blue?logo=GitHub)](https://github.com/ikoghoemmanuell?tab=repositories)
-
 [![View My Profile](https://img.shields.io/badge/MEDIUM-Article-purple?logo=Medium)](https://medium.com/@emmanuel.ikogho/deploying-a-machine-learning-model-with-gradio-97d4f8c5e795)
 
 # Building and Deploying a Machine Learning Model with Gradio
 
-<img src="https://i.ytimg.com/vi/RiCQzBluTxU/maxresdefault.jpg" width="">
+![Screenshot (153)](https://github.com/ikoghoemmanuell/gradio-classification-app/assets/102419217/7394058d-ca91-40fe-b444-f44b426581b9)
 
 # Introduction
 
